@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ diary.title }} の詳細</title>
+</head>
+<body>
+    <h1>{{ diary.title }}</h1>
+
+    <p>日付: {{ diary.created_at|date:"Y/m/d" }}</p>
+    <p>気分: {{ diary.mood }} {{ diary.emoji }}</p>
+
+    {% if diary.audio_file %}
+        <audio controls>
+            <source src="{{ diary.audio_file.url }}" type="audio/mpeg">
+            お使いのブラウザはオーディオをサポートしていません。
+        </audio>
+    {% endif %}
+
+    <p>{{ diary.text_entry }}</p>
+
+    {% if diary.image %}
+        <img src="{{ diary.image.url }}" alt="日記の画像" style="max-width:300px;">
+    {% endif %}
+
+    <br><br>
+    <a href="{% url 'diary:diary_list' %}">← 一覧に戻る</a>
+</body>
+</html>
+

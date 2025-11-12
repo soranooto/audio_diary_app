@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>プロフィールを編集</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #fffaf5;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 85%;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background-color: #fdfdfd;
+        }
+
+        button {
+            display: block;
+            margin: 25px auto;
+            background-color: #ffb6b9;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 30px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff9a9e;
+        }
+
+        /* ホームに戻るボタン */
+        .home-btn {
+            display: inline-block;
+            margin-top: 30px;
+        }
+
+        .home-btn img {
+            width: 80px;
+            height: auto;
+            transition: transform 0.2s;
+        }
+
+        .home-btn img:hover {
+            transform: scale(1.

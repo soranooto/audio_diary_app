@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{{ profile.username }} Diary</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-image: url("{% static 'images/Mainbackground.png' %}");
+    background-size: contain;          /* 💡縦横比を保って全体を表示 */
+    background-position: center;       /* 中央寄せ */
+    background-repeat: no-repeat;      /* 繰り返しなし */
+    background-color: #ffe6ea;         /* 背景画像外の部分を白で埋める */
+    text-align: left;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* タイトル */
+  .header {
+    position: relative;
+    padding: 24px 40px 10px;
+    margin-top: 40px;   /* ← ステータスメッセージの行を少し下に移動 */
+  }
+
+  .username {
+    font-size: 26px;
+    font-weight: bold;
+    color: #ff91a4;
+    text-shadow: 1px 1px #ffe6ea;
+    letter-spacing: 1px;
+  }
+
+  .profile-icon {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #dda3b3;
+    background: #fff;
+  }
+
+  .meta {
+    color: #6a4a32;
+    line-height: 1.8;
+    margin-top: 16px;
+    font-size: 15px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.7);
+  }
+
+  /* ノート部分 */
+  .page {
+    position: relative;
+    background-color: transparent;
+    padding: 40px 20px 160px;
+    min-height: 600px;
+    box-sizing: border-box;
+  }
+
+  /* アイコン配置 */
+  .icon {
+    position: absolute;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+  }
+  .icon:hover { transform: translateY(-6px); }
+
+  .sticker { left: 70px; top: 230px; width: 130px; }
+  .record { right: 30px; top: 230px; width: 190px; }
+  .clip { right: 10px; top: 30%; width: 80px; }
+  .chatbot { left: 40px; bottom: 20px; width: 200px; }
+  .pencil { right: 30px; bottom: 5px; width: 190px; }
+
+  @media (max-width:480px) {
+    .sticker { width: 100px; top: 130px; }
+    .record { width: 120px; }
+    .clip { width: 70px; }
+    .chatbot { width: 100px; }
+    .pencil { width: 120px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="username">{{ profile.username }} Diary</div>
+      {% if profile.icon %}
+        <img src="{{ profile.icon.url }}" class="profile-icon" alt="icon">
+      {% else %}
+        <img src="{% static 'images/default_icon.png' %}" class="profile-icon" alt="default icon">
+      {% endif %}
+      <div class="meta">
+        03 fu music<br>
+        SNS: {{ profile.sns_link }}<br>
+        ♪ {{ profile.current_music }}
+      </div>
+    </div>
+
+    <div class="page">
+      <a href="{% url 'diary:sticker_page' %}">
+        <img src="{% static 'images/sticker.png' %}" class="icon sticker" alt="sticker">
+      </a>
+      <a href="{% url 'diary:diary_list' %}">
+        <img src="{% static 'images/memory.png' %}" class="icon record" alt="record">
+      </a>
+      <a href="{% url 'diary:settings' %}">
+        <img src="{% static 'images/setting.png' %}" class="icon clip" alt="clip">
+      </a>
+      <a href="{% url 'diary:chatbot' %}">
+        <img src="{% static 'images/bot.png' %}" class="icon chatbot" alt="chatbot">
+      </a>
+      <a href="{% url 'diary:diary_create' %}">
+        <img src="{% static 'images/Newrecord.png' %}" class="icon pencil" alt="pencil">
+      </a>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

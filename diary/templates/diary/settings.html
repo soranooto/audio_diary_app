@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>設定ページ</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #fffaf7;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #444;
+  }
+
+  /* 🏠 ホームボタン */
+  .home-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+  }
+
+  .home-btn img {
+    width: 120px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .home-btn img:hover {
+    transform: scale(1.05);
+  }
+
+  /* 見出し */
+  h1 {
+    background-color: #ffd6e7;
+    padding: 20px;
+    margin: 0;
+    font-size: 24px;
+    color: #6a4a32;
+    letter-spacing: 1px;
+  }
+
+  /* セクション共通 */
+  section {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin: 30px auto;
+    padding: 25px;
+    width: 90%;
+    max-width: 600px;
+  }
+
+  h2 {
+    color: #ff91a4;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ffd6e7;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+
+  input[type="text"], textarea {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #ffd6e7;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    outline: none;
+  }
+
+  button {
+    background-color: #ff91a4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background-color: #ff6385;
+  }
+
+  .delete-btn {
+    background-color: #ff7575;
+  }
+
+  .delete-btn:hover {
+    background-color: #ff4c4c;
+  }
+
+  img.profile-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #ffd6e7;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- 🏠 ホームボタン -->
+  <div class="home-btn">
+    <a href="{% url 'diary:mypage' %}">
+      <img src="{% static 'images/home_button.png' %}" alt="ホームに戻る">
+    </a>
+  </div>
+
+  <h1>⚙️ 設定ページ</h1>
+
+  <!-- 👤 プロフィール設定 -->
+  <section>
+    <h2>プロフィール設定</h2>
+    <img src="{% static 'images/default_icon.png' %}" alt="プロフィール画像" class="profile-icon"><br>
+    <input type="file" name="profile_image" accept="image/*"><br>
+    <input type="text" name="username" placeholder="名前を入力"><br>
+    <textarea name="status" rows="3" placeholder="ステータスメッセージを入力..."></textarea><br>
+    <button>保存</button>
+  </section>
+
+  <!-- 🗒️ 日記管理 -->
+  <section>
+    <h2>日記の管理</h2>
+    <p>登録済みの日記を編集・削除できます。</p>
+    <a href="{% url 'diary:diary_list' %}">
+      <button>日記一覧へ</button>
+    </a>
+  </section>
+
+  <!-- ⚙️ アカウント設定 -->
+  <section>
+    <h2>アカウント設定</h2>
+    <p>アカウントを完全に削除する場合は、以下のボタンを押してください。</p>
+    <button class="delete-btn" onclick="confirmDelete()">アカウント削除</button>
+  </section>
+
+  <script>
+    function confirmDelete() {
+      if (confirm("本当にアカウントを削除しますか？ この操作は取り消せません。")) {
+        alert("アカウント削除処理を実装予定です。");
+      }
+    }
+  </script>
+
+</body>
+</html>

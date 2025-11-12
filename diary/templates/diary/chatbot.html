@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Chatbot</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #fffaf7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+  }
+
+  /* 🧸 右上のユーザー名タイトル */
+  .username-title {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff91a4;
+    text-shadow: 1px 1px #ffe6ea;
+    letter-spacing: 1px;
+    z-index: 101;
+  }
+
+  /* 🏠 ホームボタン（左上固定） */
+  .home-btn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+  }
+
+  .home-btn img {
+    width: 130px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .home-btn img:hover {
+    transform: scale(1.05);
+  }
+
+  /* 上部タイトルバー */
+  header {
+    background-color: #ffd6e7;
+    color: #6a4a32;
+    padding: 16px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  /* チャットエリア */
+  .chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    overflow-y: auto;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* 吹き出し */
+  .message {
+    max-width: 75%;
+    padding: 10px 14px;
+    margin: 8px 0;
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .user {
+    align-self: flex-end;
+    background-color: #ffe1ed;
+    color: #333;
+    border-top-right-radius: 0;
+  }
+
+  .bot {
+    align-self: flex-start;
+    background-color: #fff;
+    border: 1.5px solid #ffb6c1;
+    color: #444;
+    border-top-left-radius: 0;
+  }
+
+  /* 入力エリア */
+  .input-area {
+    display: flex;
+    border-top: 2px solid #f3c8d4;
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  .input-area input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ffb6c1;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+  }
+
+  .input-area button {
+    background-color: #ff91a4;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 18px;
+    margin-left: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .input-area button:hover {
+    background-color: #ff6385;
+  }
+
+  /* スクロールバー非表示 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+  <!-- 👤 ユーザー名タイトル -->
+  <div class="username-title">
+    {{ profile.username }} Diary
+  </div>
+
+  <!-- 🏠 ホームボタン -->
+  <div class="home-btn">
+    <a href="{% url 'diary:mypage' %}">
+      <img src="{% static 'images/home_button.png' %}" alt="ホームに戻る">
+    </a>
+  </div>
+
+  <header>🤖 Music Chatbot 🎶</header>
+
+  <div class="chat-container" id="chat-container">
+    <div class="message bot">
+      こんにちは！音楽の話をしよう🎵<br>
+      好きなアーティストや曲の気分を教えてね。
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input type="text" id="user-input" placeholder="音楽について話しかけてみよう…" />
+    <button onclick="sendMessage()">送信</button>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById("chat-container");
+    const userInput = document.getElementById("user-input");
+
+    function addMessage(text, sender) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+      msg.innerHTML = text;
+      chatContainer.appendChild(msg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      userInput.value = "";
+
+      const loading = document.createElement("div");
+      loading.classList.add("message", "bot");
+      loading.innerText = "🎵 考え中…";
+      chatContainer.appendChild(loading);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      const response = await fetch("{% url 'diary:chatbot' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ message: text })
+      });
+
+      const data = await response.json();
+      loading.remove();
+      addMessage(data.reply, "bot");
+    }
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音声日記を作成</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #fffaf7;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1000; /* ← これを追加！最前面に表示 */
+}
+
+
+  .home-btn img {
+    width: 130px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .home-btn img:hover {
+    transform: scale(1.05);
+  }
+
+  /* 🎧 上部ヘッダー */
+  header {
+    background-color: #ffd6e7;
+    color: #6a4a32;
+    padding: 16px 0;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    position: relative;
+  }
+
+  /* 👤 右上ユーザー名 */
+  .username-title {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff91a4;
+    text-shadow: 1px 1px #ffe6ea;
+    letter-spacing: 1px;
+  }
+
+  /* 💾 フォーム全体 */
+  .container {
+    max-width: 600px;
+    margin: 120px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(255, 150, 150, 0.2);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  form input, form textarea, form select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid #ffc0cb;
+    font-size: 16px;
+  }
+
+  /* 📤 投稿ボタン（画像） */
+  .submit-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .submit-btn img {
+    width: 220px;
+    height: auto;
+    transition: transform 0.2s ease;
+  }
+
+  .submit-btn img:hover {
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+<!-- 🏠 ホームボタン -->
+<div class="home-btn">
+  <a href="{% url 'diary:mypage' %}">
+    <img src="{% static 'images/home_button.png' %}" alt="ホームに戻る">
+  </a>
+</div>
+
+
+
+
+  <header>
+    ✏️ 音声日記を作成 🎧
+    <div class="username-title">
+      {% if profile.username %}
+        {{ profile.username }} Diary
+      {% else %}
+        ゲスト Diary
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- 💾 作成フォーム -->
+  <div class="container">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <!-- 📤 投稿ボタン -->
+      <button type="submit" class="submit-btn">
+        <img src="{% static 'images/投稿する.png' %}" alt="投稿する">
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>
+
+
+
